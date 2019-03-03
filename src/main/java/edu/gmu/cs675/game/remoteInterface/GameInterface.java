@@ -11,7 +11,7 @@ public interface GameInterface extends Remote {
 
     String getPlayerWon() throws RemoteException;
 
-    boolean move(String direction) throws Exception;
+    int move(String direction) throws Exception;
 
     Point getCurrentPosition() throws RemoteException;
 

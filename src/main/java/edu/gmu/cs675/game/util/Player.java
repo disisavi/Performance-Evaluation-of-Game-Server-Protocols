@@ -1,17 +1,20 @@
 package edu.gmu.cs675.game.util;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player {
 
-    int numberofGoalsReached;
+    public int numberofGoalsReached;
     public String playerName;
     public Point point;
     public boolean isWon;
+    public ArrayList<Point> goalsReached;
 
     public Player(String name) {
         this.playerName = name;
         isWon = false;
+        goalsReached = new ArrayList<>();
     }
 
     public boolean equals(Object player2) {

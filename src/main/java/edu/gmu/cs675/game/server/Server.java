@@ -1,12 +1,19 @@
 package edu.gmu.cs675.game.server;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.Scanner;
 
 public class Server {
 
-    public static void main(String args[]){
+    public static void main(String args[]) {
+
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
         System.out.println("Performance analysis of RMI vs Sockets");
         System.out.println("1. R for RMI\n2. S for Socket");
         Scanner sc = new Scanner(System.in);
@@ -39,7 +46,7 @@ public class Server {
             }
         }
 
-        if(input.toUpperCase().equals("R")){
+        if (input.toUpperCase().equals("R")) {
             RMIServer rmiGameServer = new RMIServer();
             rmiGameServer.startRMIServer();
         }

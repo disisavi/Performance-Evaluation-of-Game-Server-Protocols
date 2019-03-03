@@ -17,6 +17,7 @@ import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class RMIServer implements GameInterface {
     public static int port = 1024;
@@ -68,19 +69,15 @@ public class RMIServer implements GameInterface {
         return this.game.getPlayerWon();
     }
 
-    public boolean move(String direction) throws Exception {
+    public int move(String direction) throws Exception {
+        int value = -10;
         try {
             String hostname = RemoteServer.getClientHost();
-            this.game.move(direction, IPPlayerMap.get(hostname));
+            value = this.game.move(direction, IPPlayerMap.get(hostname));
         } catch (ServerNotActiveException e) {
             System.out.println(e.getMessage());
-            throw e;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw e;
-
         }
-        return true;
+        return value;
     }
 
     public Point getCurrentPosition() throws RemoteException {
@@ -113,10 +110,7 @@ public class RMIServer implements GameInterface {
         return true;
     }
 
-    void clearConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
+
 
     public void shutdown(Exception exception) {
         //todo -- add it to serverServices...
@@ -151,7 +145,6 @@ public class RMIServer implements GameInterface {
     public void startRMIServer() {
         RMIServer rmiServer = new RMIServer();
 
-        rmiServer.clearConsole();
         try {
 
             Registry registry;
@@ -163,12 +156,19 @@ public class RMIServer implements GameInterface {
             }
             GameInterface nodeStub = (GameInterface) UnicastRemoteObject.exportObject(rmiServer, RMIServer.port);
 
-            registry.rebind(rmiServer.hostName, nodeStub);
+            registry.rebind("game", nodeStub);
             System.out.println("Game Server Startup Complete\nserver Name -- " + rmiServer.hostName);
             System.out.println("ip -- " + rmiServer.inetAddress.getHostAddress());
         } catch (RemoteException e) {
             System.out.println("Game server Startup Failure ...");
             rmiServer.shutdown(e);
+        }
+
+        System.out.println("Enter e to exit");
+        Scanner scanner = new Scanner(System.in);
+        String string = scanner.next();
+        if(string.charAt(0) == 'e'){
+            rmiServer.shutdown(null);
         }
 
     }

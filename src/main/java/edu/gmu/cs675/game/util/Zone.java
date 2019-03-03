@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Zone {
 
-    final static int maxHeight = Game.maxHeight, maxWidth = Game.maxWidth, numberPrize = 1;
+    public final static int maxHeight = Game.maxHeight, maxWidth = Game.maxWidth, numberPrize = 1;
     public int height, widht;
     public Point basePoint;
     public Map<String, Player> playerMap;
@@ -60,7 +60,7 @@ public class Zone {
         }
     }
 
-    public void moveUp(String playerName) throws Exception {
+    public int moveUp(String playerName) {
         Point point = playerMap.get(playerName).point;
 
         boolean notOverappingPlayer = true;
@@ -73,19 +73,27 @@ public class Zone {
         if (point.y < this.height && notOverappingPlayer) {
             point.y++;
         } else {
-            String exception;
             if (!notOverappingPlayer) {
 
-                exception = "Another Player in the Point";
+                return -1;
             } else {
-                exception = "Illegal Move";
+                return -3;
             }
-            throw new Exception(exception);
 
         }
+
+        Player player = this.playerMap.get(playerName);
+        if (this.goalSet.contains(point)
+                && (!player.goalsReached.contains(point))) {
+
+            player.goalsReached.add(point);
+            player.numberofGoalsReached++;
+            return 1;
+        }
+        return 0;
     }
 
-    public void moveDown(String playerName) throws Exception {
+    public int moveDown(String playerName) {
         Point point = playerMap.get(playerName).point;
 
         boolean notOverappingPlayer = true;
@@ -98,18 +106,26 @@ public class Zone {
         if (point.y - 1 >= this.basePoint.y && notOverappingPlayer) {
             point.y--;
         } else {
-            String exception;
             if (!notOverappingPlayer) {
 
-                exception = "Another Player in the Point";
+                return -1 ;
             } else {
-                exception = "Illegal Move";
+                return -3;
             }
-            throw new Exception(exception);
         }
+
+        Player player = this.playerMap.get(playerName);
+        if (this.goalSet.contains(point)
+                && (!player.goalsReached.contains(point))) {
+
+            player.goalsReached.add(point);
+            player.numberofGoalsReached++;
+            return 1;
+        }
+        return 0;
     }
 
-    public void moveLeft(String playerName) throws Exception {
+    public int moveLeft(String playerName)  {
         Point point = playerMap.get(playerName).point;
 
         boolean notOverappingPlayer = true;
@@ -122,18 +138,29 @@ public class Zone {
         if (point.x - 1 > this.basePoint.x && notOverappingPlayer) {
             point.x--;
         } else {
-            String exception;
+
             if (!notOverappingPlayer) {
 
-                exception = "Another Player in the Point";
+            return -1;
             } else {
-                exception = "Illegal Move";
+                return -3;
             }
-            throw new Exception(exception);
         }
+
+        Player player = this.playerMap.get(playerName);
+        if (this.goalSet.contains(point)
+                && (!player.goalsReached.contains(point))) {
+
+            player.goalsReached.add(point);
+            player.numberofGoalsReached++;
+            return 1;
+
+        }
+        return 0;
     }
 
-    public void moveRight(String playerName) throws Exception {
+
+    public int moveRight(String playerName){
         Point point = playerMap.get(playerName).point;
 
         boolean notOverappingPlayer = true;
@@ -146,15 +173,25 @@ public class Zone {
         if (point.x < this.widht && notOverappingPlayer) {
             point.x++;
         } else {
-            String exception;
+
             if (!notOverappingPlayer) {
 
-                exception = "Another Player in the Point";
+            return -1;
             } else {
-                exception = "Illegal Move";
+            return -3;
             }
-            throw new Exception(exception);
+
         }
+
+        Player player = this.playerMap.get(playerName);
+        if (this.goalSet.contains(point)
+                && (!player.goalsReached.contains(point))) {
+
+            player.goalsReached.add(point);
+            player.numberofGoalsReached++;
+            return 1;
+        }
+        return 0;
     }
 
     public void addPlayerToBoard(String playerName) {

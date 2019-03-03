@@ -36,28 +36,30 @@ public class Game {
         return returnString.toString();
     }
 
-    public boolean move(String direction, String playerName) throws Exception {
+    public int move(String direction, String playerName) {
         if (this.didSomeoneWin) {
-            return false;
+            return -2;
         }
-
+        int value = -10;
         switch (direction.toUpperCase()) {
             case "UP":
-                this.zone.moveUp(playerName);
+                value = this.zone.moveUp(playerName);
                 break;
             case "DOWN":
-                this.zone.moveDown(playerName);
+                value = this.zone.moveDown(playerName);
                 break;
             case "LEFT":
-                this.zone.moveDown(playerName);
+                value = this.zone.moveLeft(playerName);
                 break;
             case "RIGHT":
-                this.zone.moveRight(playerName);
+                value = this.zone.moveRight(playerName);
                 break;
-            default:
-                throw new Exception("Incorrect Direction");
         }
-        return true;
+        if(value>=0
+        && this.zone.playerMap.get(playerName).numberofGoalsReached == Zone.numberPrize){
+            return 2;
+        }
+        return value;
     }
 
     public Point getCurrentPosition(String playerName) throws RemoteException {
