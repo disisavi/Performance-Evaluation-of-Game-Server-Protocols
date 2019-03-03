@@ -1,7 +1,9 @@
-.idea/
+.idea/*
+.idea
 .classpath
 .project
 .settings/
 .vscode/
 bin/
 target/
+target/*
