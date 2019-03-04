@@ -135,7 +135,7 @@ public class Zone {
                 notOverappingPlayer = false;
             }
         }
-        if (point.x - 1 > this.basePoint.x && notOverappingPlayer) {
+        if (point.x  > this.basePoint.x && notOverappingPlayer) {
             point.x--;
         } else {
 
@@ -221,7 +221,16 @@ public class Zone {
         playerMap.remove(playerName);
 
     }
-
+    public String returnplayerStats(String playerName){
+        StringBuilder stringBuilder = new StringBuilder();
+         stringBuilder.append(this.playerMap.get(playerName).toString());
+         stringBuilder.append("The zone's stats are \n");
+        stringBuilder.append("The Zone's boundries are... \n\t[{" + this.basePoint.x + ", " + this.basePoint.y + "}, {"
+                + this.basePoint.x + ", " + (this.basePoint.y + height) + "}, {"
+                + (this.basePoint.x + widht) + ", " + (this.basePoint.y + height) + "}, {"
+                + (this.basePoint.x + widht) + ", " + this.basePoint.y + "}]");
+        return stringBuilder.toString();
+    }
 
 }
 

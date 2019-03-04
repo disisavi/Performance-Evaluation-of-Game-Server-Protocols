@@ -50,12 +50,13 @@ public class RMIServer implements GameInterface {
         return ip;
     }
 
-    public void registerPlayer(String playerName) throws Exception {
+    public void registerPlayer(String playerName) throws ServerNotActiveException {
 
         try {
             String clientHost = RemoteServer.getClientHost();
             IPPlayerMap.put(clientHost, playerName);
             this.game.registerPlayer(playerName);
+            System.out.println("Player "+playerName+" from host "+clientHost+" Registered");
         } catch (ServerNotActiveException e) {
             System.out.println("Attempt to add player " + playerName + " failed");
             e.printStackTrace();
@@ -94,6 +95,20 @@ public class RMIServer implements GameInterface {
         return point;
     }
 
+    @Override
+    public String getStats() throws RemoteException {
+        try {
+            String hostname = RemoteServer.getClientHost();
+            if (this.IPPlayerMap.get(hostname) == null) {
+                return "Player not registered";
+            }
+            return this.game.getStats(this.IPPlayerMap.get(hostname));
+        } catch (ServerNotActiveException e) {
+            e.printStackTrace();
+            return "Stats Not Found";
+        }
+    }
+
     public String getAllPlayerNames() throws RemoteException {
         return this.game.getAllPlayerNames();
     }
@@ -103,6 +118,7 @@ public class RMIServer implements GameInterface {
             String hostname = RemoteServer.getClientHost();
             this.game.deRegisterPLayer(this.IPPlayerMap.get(hostName));
             IPPlayerMap.remove(hostname);
+            System.out.println("The player "+this.IPPlayerMap.get(hostName)+" from host "+hostname+" Dropped fom the game");
         } catch (ServerNotActiveException e) {
             System.out.println(e.getCause());
             throw e;
@@ -111,9 +127,7 @@ public class RMIServer implements GameInterface {
     }
 
 
-
     public void shutdown(Exception exception) {
-        //todo -- add it to serverServices...
         System.out.println("Shutting down Game RMI server");
         if (exception != null) {
             System.out.println("The following error lead to the shutdown");
@@ -138,7 +152,6 @@ public class RMIServer implements GameInterface {
 
 
         System.exit(-1);
-
     }
 
 
@@ -167,11 +180,9 @@ public class RMIServer implements GameInterface {
         System.out.println("Enter e to exit");
         Scanner scanner = new Scanner(System.in);
         String string = scanner.next();
-        if(string.charAt(0) == 'e'){
+        if (string.charAt(0) == 'e') {
             rmiServer.shutdown(null);
         }
 
     }
 }
-
-

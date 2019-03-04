@@ -27,4 +27,20 @@ public class Player {
         }
         return false;
     }
+
+    public String toString(){
+        StringBuilder string = new StringBuilder();
+
+        string.append("*******\nPlayer -- "+this.playerName);
+        string.append("\n Current Position -- "+this.point.toString());
+        if (this.isWon){
+            string.append("\nAnd "+this.playerName+" has won");
+        }
+        else
+        {
+            string.append("\nAnd the number of goals Reached is "+this.numberofGoalsReached);
+        }
+
+        return string.toString();
+    }
 }

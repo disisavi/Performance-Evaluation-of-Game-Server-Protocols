@@ -22,7 +22,7 @@ public class Game {
         this.zone.addPlayerToBoard(playerName);
     }
 
-    public String getPlayerWon() throws RemoteException {
+    public String getPlayerWon(){
         StringBuilder returnString = new StringBuilder();
         if (!didSomeoneWin) {
             returnString.append("Error :- No One Won till now");
@@ -38,6 +38,9 @@ public class Game {
 
     public int move(String direction, String playerName) {
         if (this.didSomeoneWin) {
+            if(this.getPlayerWon().toUpperCase().equals(playerName)){
+                return 2;
+            }
             return -2;
         }
         int value = -10;
@@ -55,9 +58,12 @@ public class Game {
                 value = this.zone.moveRight(playerName);
                 break;
         }
+
         if(value>=0
         && this.zone.playerMap.get(playerName).numberofGoalsReached == Zone.numberPrize){
-            return 2;
+            this.didSomeoneWin = true;
+            this.zone.playerMap.get(playerName).isWon = true;
+            value  =  2;
         }
         return value;
     }
@@ -81,5 +87,7 @@ public class Game {
         return true;
     }
 
-
+    public String getStats (String playerName){
+        return this.zone.returnplayerStats(playerName);
+    }
 }

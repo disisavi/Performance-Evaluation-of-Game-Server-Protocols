@@ -15,6 +15,8 @@ public interface GameInterface extends Remote {
 
     Point getCurrentPosition() throws RemoteException;
 
+    String getStats () throws RemoteException;
+
     String getAllPlayerNames() throws RemoteException;
 
     boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException;

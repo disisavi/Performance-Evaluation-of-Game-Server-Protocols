@@ -13,7 +13,7 @@ public class Server {
 
         System.out.print("\033[H\033[2J");
         System.out.flush();
-
+        System.out.println(System.getProperty("user.dir"));
         System.out.println("Performance analysis of RMI vs Sockets");
         System.out.println("1. R for RMI\n2. S for Socket");
         Scanner sc = new Scanner(System.in);
