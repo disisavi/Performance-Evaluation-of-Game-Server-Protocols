@@ -72,9 +72,9 @@ public class SocketServer {
                 Scanner in = new Scanner(socket.getInputStream());
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 System.out.println("DEBUG 1");
-                if (in.hasNext()) {
+                if (in.hasNextLine()) {
                     System.out.println("DEBUG 1.3");
-                    String[] command = in.nextLine().split(",", 2);
+                    String[] command = in.nextLine().split(" ", 2);
                     System.out.println("DEBUG 2");
                     Map.Entry<Integer, Object> returnType = this.execute(command);
                     System.out.println("DEBUG 3");
@@ -86,7 +86,8 @@ public class SocketServer {
                     System.out.println("DEBUG 5");
                 }
             } catch (Exception e) {
-                System.out.println("Error:" + socket);
+                System.out.println("Error:" + socket+" "+e.getCause());
+                e.printStackTrace();
             } finally {
                 try {
                     socket.close();

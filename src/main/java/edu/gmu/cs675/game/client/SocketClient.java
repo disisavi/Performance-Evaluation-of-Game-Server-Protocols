@@ -26,6 +26,8 @@ public class SocketClient implements ClientInterface {
 
         try {
             this.socket = new Socket(serverIP, GameInterface.port);
+            returnMessage = new ObjectInputStream(socket.getInputStream());
+            outBoundMessage = new PrintWriter(this.socket.getOutputStream(), true);
         } catch (IOException e) {
             System.out.println("Error -- Couldn't connect to server" + e.getMessage());
             e.printStackTrace();
@@ -35,20 +37,20 @@ public class SocketClient implements ClientInterface {
     public Object serverConnectionPoint(String[] commandList) {
 
         try{
-            returnMessage = new ObjectInputStream(socket.getInputStream());
-            outBoundMessage = new PrintWriter(this.socket.getOutputStream(), true);
+            outBoundMessage.flush();
             if(commandList.length == 1){
-                outBoundMessage.print(commandList[0]);
+                outBoundMessage.println(commandList[0]);
             }
             else if(commandList.length>1){
-                outBoundMessage.print(commandList[0]+" "+commandList[1]);
+                outBoundMessage.println(commandList[0]+" "+commandList[1]);
             }
-
             return returnMessage.readObject();
 
         }catch (IOException e) {
+            System.out.println("Reading failed due to "+e.getMessage() + " "+e.getCause());
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            System.out.println("Reading failed due to "+e.getMessage() + " "+e.getCause());
             e.printStackTrace();
         }
         return null;
