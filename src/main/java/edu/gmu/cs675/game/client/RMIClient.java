@@ -42,7 +42,7 @@ public class RMIClient implements ClientInterface {
     }
 
     @Override
-    public int move(String direction) throws Exception {
+    public Integer move(String direction) throws Exception {
         return this.game.move(direction);
     }
 
@@ -62,7 +62,7 @@ public class RMIClient implements ClientInterface {
     }
 
     @Override
-    public boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException {
+    public Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException {
         return this.game.deRegisterPLayer();
     }
 }

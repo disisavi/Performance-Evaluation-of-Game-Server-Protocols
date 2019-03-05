@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class RMIServer implements GameInterface {
-    public static int port = 1024;
     public InetAddress inetAddress;
     public String hostName;
 
@@ -70,7 +69,7 @@ public class RMIServer implements GameInterface {
         return this.game.getPlayerWon();
     }
 
-    public int move(String direction) throws Exception {
+    public Integer move(String direction) throws Exception {
         int value = -10;
         try {
             String hostname = RemoteServer.getClientHost();
@@ -113,7 +112,7 @@ public class RMIServer implements GameInterface {
         return this.game.getAllPlayerNames();
     }
 
-    public boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException {
+    public Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException {
         try {
             String hostname = RemoteServer.getClientHost();
             this.game.deRegisterPLayer(this.IPPlayerMap.get(hostName));

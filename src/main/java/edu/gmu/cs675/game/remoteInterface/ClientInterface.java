@@ -10,7 +10,7 @@ public interface ClientInterface {
 
     String getPlayerWon() throws RemoteException;
 
-    int move(String direction) throws Exception;
+    Integer move(String direction) throws Exception;
 
     Point getCurrentPosition() throws RemoteException;
 
@@ -18,7 +18,7 @@ public interface ClientInterface {
 
     String getAllPlayerNames() throws RemoteException;
 
-    boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException;
+    Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException;
 
 
 }

@@ -49,6 +49,10 @@ public class Server {
         if (input.toUpperCase().equals("R")) {
             RMIServer rmiGameServer = new RMIServer();
             rmiGameServer.startRMIServer();
+        }else if (input.toUpperCase().equals("S"))
+        {
+            SocketServer socketServer = new SocketServer();
+            socketServer.startSocketServer();
         }
     }
 }

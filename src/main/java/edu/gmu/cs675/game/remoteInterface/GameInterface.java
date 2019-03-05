@@ -6,12 +6,13 @@ import java.rmi.RemoteException;
 import java.rmi.server.ServerNotActiveException;
 
 public interface GameInterface extends Remote {
+    public static final int port = 1024;
 
     void registerPlayer(String playerName) throws Exception;
 
     String getPlayerWon() throws RemoteException;
 
-    int move(String direction) throws Exception;
+    Integer move(String direction) throws Exception;
 
     Point getCurrentPosition() throws RemoteException;
 
@@ -19,5 +20,5 @@ public interface GameInterface extends Remote {
 
     String getAllPlayerNames() throws RemoteException;
 
-    boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException;
+    Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException;
 }
