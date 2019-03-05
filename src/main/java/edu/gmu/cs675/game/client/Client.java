@@ -1,10 +1,9 @@
 package edu.gmu.cs675.game.client;
 
-import edu.gmu.cs675.game.remoteInterface.GameInterface;
+import edu.gmu.cs675.game.remoteInterface.ClientInterface;
+
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.ServerNotActiveException;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Scanner;
 
 
 public class Client {
-    GameInterface game;
+    ClientInterface game;
     boolean isRegistered;
     String name;
     Map<String, ActionManager> actionManagerMap;
@@ -29,39 +28,43 @@ public class Client {
         }
     }
 
-    public GameInterface getGameStub() throws RemoteException, NotBoundException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the Game server ip ");
-        String host = scanner.next();
 
-        actionManagerMap.get(actionNames.GET_CONNECTION).setStartTime();
-        Registry gameRegistry = LocateRegistry.getRegistry(host, 1024);
-        GameInterface gameStub = (GameInterface) gameRegistry.lookup("game");
-        actionManagerMap.get(actionNames.GET_CONNECTION).setEndTIme();
-
-        return gameStub;
-    }
-
-    void clearConsole(){
+    void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-    public static void main(String[] args) {
-        Client client = new Client();
-        client.clearConsole();
-        System.out.println("Welcome to the game");
 
+
+    void getServer() {
+        System.out.println("Client for Performance analysis of RMI vs Sockets");
+        System.out.println("1. R for connecting to RMI Server\n2. S for connecting to  Socket server");
+        Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine();
+
+        actionManagerMap.get(actionNames.GET_CONNECTION).setStartTime();
         try {
-            client.game = client.getGameStub();
-            System.out.println("please enter the player Name");
-            Scanner scanner = new Scanner(System.in);
-            client.name = scanner.nextLine();
-            client.run();
+            if (input.toUpperCase().equals("R")) {
+
+                this.game = new RMIClient();
+            } else {
+                //todo
+            }
+
+            actionManagerMap.get(actionNames.GET_CONNECTION).setEndTIme();
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        Client client = new Client();
+        client.clearConsole();
+        System.out.println("Welcome to the game");
+
+        client.getServer();
+        client.run();
 
         System.out.println("Game over!!");
     }
@@ -76,30 +79,35 @@ public class Client {
             switch (command) {
                 case "CLEAR":
                     this.clearConsole();
+                    break;
                 case "REPORT":
                     this.printReport();
+                    break;
                 case "UP":
                 case "DOWN":
                 case "LEFT":
                 case "RIGHT":
                     if (isRegistered) {
                         this.move(command);
-                    } else{
+                    } else {
                         System.out.println("Kindly enter one of the following commands");
-                    this.showAvailableCommands();}
+                        this.showAvailableCommands();
+                    }
                     break;
                 case "WHO":
                     if (isRegistered) {
                         this.getPlayerWon();
-                    } else{
+                    } else {
                         System.out.println("Kindly enter one of the following commands");
-                    this.showAvailableCommands();}
+                        this.showAvailableCommands();
+                    }
                     break;
                 case "POS":
                     if (isRegistered) {
                         this.getCurrentPosition();
-                    } else{
-                        this.showAvailableCommands();}
+                    } else {
+                        this.showAvailableCommands();
+                    }
                     break;
                 case "INFO":
                     if (isRegistered) {
@@ -215,16 +223,20 @@ public class Client {
             this.game.deRegisterPLayer();
             this.isRegistered = false;
         } catch (RemoteException e) {
-            System.out.println(message+" "+e.getMessage());
+            System.out.println(message + " " + e.getMessage());
             e.printStackTrace();
         } catch (ServerNotActiveException e) {
-            System.out.println(message+" "+e.getMessage());
+            System.out.println(message + " " + e.getMessage());
             e.printStackTrace();
         }
         actionManagerMap.get(actionNames.UPDATE_PLAYER_STATUS).setEndTIme();
     }
 
     void registerPlayer() {
+        System.out.println("please enter a Name to register");
+        Scanner scanner = new Scanner(System.in);
+        this.name = scanner.nextLine();
+
         actionManagerMap.get(actionNames.UPDATE_PLAYER_STATUS).setStartTime();
         try {
             this.game.registerPlayer(this.name);
@@ -246,8 +258,9 @@ public class Client {
         actionManagerMap.get(actionNames.GET_PLAYER_STATE).setEndTIme();
     }
 
-    void printReport(){
-        for(Map.Entry<String,ActionManager> entry:actionManagerMap.entrySet()){
+    void printReport() {
+        this.clearConsole();
+        for (Map.Entry<String, ActionManager> entry : actionManagerMap.entrySet()) {
             entry.getValue().printReport();
         }
     }
