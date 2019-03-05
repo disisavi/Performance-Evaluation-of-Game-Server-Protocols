@@ -6,7 +6,7 @@ import java.rmi.server.ServerNotActiveException;
 
 public interface ClientInterface {
 
-    void registerPlayer(String playerName) throws Exception;
+    Boolean registerPlayer(String playerName) throws Exception;
 
     String getPlayerWon() throws RemoteException;
 

@@ -32,8 +32,9 @@ public class RMIClient implements ClientInterface {
     }
 
     @Override
-    public void registerPlayer(String playerName) throws Exception {
+    public Boolean registerPlayer(String playerName) throws Exception {
         this.game.registerPlayer(playerName);
+        return null;
     }
 
     @Override

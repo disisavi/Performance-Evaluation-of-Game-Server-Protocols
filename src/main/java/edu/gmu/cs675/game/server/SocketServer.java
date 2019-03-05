@@ -5,6 +5,7 @@ import edu.gmu.cs675.game.remoteInterface.GameInterface;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.*;
 import java.rmi.RemoteException;
@@ -66,18 +67,23 @@ public class SocketServer {
 
         @Override
         public void run() {
-            System.out.println("Connected: " + socket);
+            System.out.println("Connected: " + socket.toString());
             try {
                 Scanner in = new Scanner(socket.getInputStream());
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                if (in.hasNextLine()) {
+                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                System.out.println("DEBUG 1");
+                if (in.hasNext()) {
+                    System.out.println("DEBUG 1.3");
                     String[] command = in.nextLine().split(",", 2);
+                    System.out.println("DEBUG 2");
                     Map.Entry<Integer, Object> returnType = this.execute(command);
+                    System.out.println("DEBUG 3");
                     if (GameCodes.VOID.equals(returnType.getKey())) {
-                        out.print(GameCodes.VOID);
+                        out.writeObject(GameCodes.VOID);
                     } else {
-                        out.print(returnType.getValue());
+                        out.writeObject(returnType.getValue());
                     }
+                    System.out.println("DEBUG 5");
                 }
             } catch (Exception e) {
                 System.out.println("Error:" + socket);

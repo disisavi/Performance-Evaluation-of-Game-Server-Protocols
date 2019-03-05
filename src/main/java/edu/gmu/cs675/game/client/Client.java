@@ -47,7 +47,7 @@ public class Client {
 
                 this.game = new RMIClient();
             } else {
-                //todo
+                this.game = new SocketClient();
             }
 
             actionManagerMap.get(actionNames.GET_CONNECTION).setEndTIme();
@@ -239,7 +239,7 @@ public class Client {
 
         actionManagerMap.get(actionNames.UPDATE_PLAYER_STATUS).setStartTime();
         try {
-            this.game.registerPlayer(this.name);
+         Boolean b=   this.game.registerPlayer(this.name);
             this.isRegistered = true;
         } catch (Exception e) {
             e.printStackTrace();
