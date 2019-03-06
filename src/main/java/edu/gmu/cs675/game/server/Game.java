@@ -38,7 +38,7 @@ public class Game {
 
     public int move(String direction, String playerName) {
         if (this.didSomeoneWin) {
-            if(this.getPlayerWon().toUpperCase().equals(playerName)){
+            if(this.getPlayerWon().equals(playerName)){
                 return 2;
             }
             return -2;
@@ -77,7 +77,7 @@ public class Game {
         int i = 0;
         for (String key : this.zone.playerMap.keySet()) {
             i++;
-            returnString.append("i " + key + "\n");
+            returnString.append(i+" " + key + "\n");
         }
         return returnString.toString();
     }

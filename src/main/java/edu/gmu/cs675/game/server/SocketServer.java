@@ -6,7 +6,6 @@ import edu.gmu.cs675.game.remoteInterface.GameInterface;
 import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.*;
 import java.rmi.RemoteException;
 import java.rmi.server.ServerNotActiveException;
@@ -29,6 +28,7 @@ public class SocketServer {
         game = new Game();
 
     }
+
     public InetAddress getSelfIP() throws SocketException, UnknownHostException {
 
         final DatagramSocket socket = new DatagramSocket();
@@ -41,7 +41,7 @@ public class SocketServer {
 
     public void startSocketServer() {
         try (ServerSocket listener = new ServerSocket(GameInterface.port)) {
-                this.inetAddress = getSelfIP();
+            this.inetAddress = getSelfIP();
             System.out.println("Game Server Startup Complete");
             System.out.println("ip -- " + this.inetAddress.getHostAddress());
             ExecutorService pool = Executors.newFixedThreadPool(20);
@@ -71,22 +71,21 @@ public class SocketServer {
             try {
                 Scanner in = new Scanner(socket.getInputStream());
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                System.out.println("DEBUG 1");
-                if (in.hasNextLine()) {
-                    System.out.println("DEBUG 1.3");
+
+                while (in.hasNextLine()) {
                     String[] command = in.nextLine().split(" ", 2);
-                    System.out.println("DEBUG 2");
+
                     Map.Entry<Integer, Object> returnType = this.execute(command);
-                    System.out.println("DEBUG 3");
+
                     if (GameCodes.VOID.equals(returnType.getKey())) {
                         out.writeObject(GameCodes.VOID);
                     } else {
                         out.writeObject(returnType.getValue());
                     }
-                    System.out.println("DEBUG 5");
+                    out.reset();
                 }
             } catch (Exception e) {
-                System.out.println("Error:" + socket+" "+e.getCause());
+                System.out.println("Error:" + socket + " " + e.getCause());
                 e.printStackTrace();
             } finally {
                 try {
@@ -174,16 +173,16 @@ public class SocketServer {
 
         @Override
         public String getAllPlayerNames() throws RemoteException {
-            return null;
+            return game.getAllPlayerNames();
         }
 
         @Override
         public Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException {
-            return null;
+            String playerName = IPPlayerMap.get(this.invokerIP);
+            game.deRegisterPLayer(playerName);
+            System.out.println("The player " + IPPlayerMap.get(this.invokerIP) + " from host " + this.invokerIP + " Dropped fom the game");
+            IPPlayerMap.remove(this.invokerIP);
+            return new Boolean(true);
         }
     }
 }
-/*
-    Todo
-    1. Spawn 2 threads, 1 for server and one for accepting commands
- */

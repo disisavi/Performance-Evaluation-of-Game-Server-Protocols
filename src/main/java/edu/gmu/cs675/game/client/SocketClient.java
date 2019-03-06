@@ -36,21 +36,21 @@ public class SocketClient implements ClientInterface {
 
     public Object serverConnectionPoint(String[] commandList) {
 
-        try{
+        try {
             outBoundMessage.flush();
-            if(commandList.length == 1){
+            if (commandList.length == 1) {
                 outBoundMessage.println(commandList[0]);
+            } else if (commandList.length > 1) {
+                outBoundMessage.println(commandList[0] + " " + commandList[1]);
             }
-            else if(commandList.length>1){
-                outBoundMessage.println(commandList[0]+" "+commandList[1]);
-            }
+
             return returnMessage.readObject();
 
-        }catch (IOException e) {
-            System.out.println("Reading failed due to "+e.getMessage() + " "+e.getCause());
+        } catch (IOException e) {
+            System.out.println("Reading failed due to " + e.getMessage() + " " + e.getCause());
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            System.out.println("Reading failed due to "+e.getMessage() + " "+e.getCause());
+            System.out.println("Reading failed due to " + e.getMessage() + " " + e.getCause());
             e.printStackTrace();
         }
         return null;
@@ -66,8 +66,8 @@ public class SocketClient implements ClientInterface {
     }
 
     @Override
-    public String getPlayerWon(){
-        String[]strings = new String[1];
+    public String getPlayerWon() {
+        String[] strings = new String[1];
         strings[0] = GameCodes.GetPlayerWon;
         Object retrunObject = this.serverConnectionPoint(strings);
         return (String) retrunObject;
@@ -75,7 +75,7 @@ public class SocketClient implements ClientInterface {
 
     @Override
     public Integer move(String direction) {
-        String[]strings = new String[2];
+        String[] strings = new String[2];
         strings[0] = GameCodes.Move;
         strings[1] = direction;
         Object retrunObject = this.serverConnectionPoint(strings);
@@ -83,24 +83,24 @@ public class SocketClient implements ClientInterface {
     }
 
     @Override
-    public Point getCurrentPosition(){
-        String[]strings = new String[1];
+    public Point getCurrentPosition() {
+        String[] strings = new String[1];
         strings[0] = GameCodes.GetCurrPos;
         Object retrunObject = this.serverConnectionPoint(strings);
         return (Point) retrunObject;
     }
 
     @Override
-    public String getStats(){
-        String[]strings = new String[1];
+    public String getStats() {
+        String[] strings = new String[1];
         strings[0] = GameCodes.GetStats;
         Object retrunObject = this.serverConnectionPoint(strings);
         return (String) retrunObject;
     }
 
     @Override
-    public String getAllPlayerNames(){
-        String[]strings = new String[1];
+    public String getAllPlayerNames() {
+        String[] strings = new String[1];
         strings[0] = GameCodes.GetAll;
         Object retrunObject = this.serverConnectionPoint(strings);
         return (String) retrunObject;
@@ -108,8 +108,8 @@ public class SocketClient implements ClientInterface {
 
     @Override
     public Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException {
-        String[]strings = new String[1];
-        strings[0] = GameCodes.GetPlayerWon;
+        String[] strings = new String[1];
+        strings[0] = GameCodes.DeRegister;
         Object retrunObject = this.serverConnectionPoint(strings);
         return (Boolean) retrunObject;
     }

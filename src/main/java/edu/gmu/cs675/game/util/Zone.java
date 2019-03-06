@@ -224,11 +224,11 @@ public class Zone {
     public String returnplayerStats(String playerName){
         StringBuilder stringBuilder = new StringBuilder();
          stringBuilder.append(this.playerMap.get(playerName).toString());
-         stringBuilder.append("The zone's stats are \n");
+         stringBuilder.append("\nThe zone's stats are \n");
         stringBuilder.append("The Zone's boundries are... \n\t[{" + this.basePoint.x + ", " + this.basePoint.y + "}, {"
                 + this.basePoint.x + ", " + (this.basePoint.y + height) + "}, {"
                 + (this.basePoint.x + widht) + ", " + (this.basePoint.y + height) + "}, {"
-                + (this.basePoint.x + widht) + ", " + this.basePoint.y + "}]");
+                + (this.basePoint.x + widht) + ", " + this.basePoint.y + "}]\n");
         return stringBuilder.toString();
     }
 

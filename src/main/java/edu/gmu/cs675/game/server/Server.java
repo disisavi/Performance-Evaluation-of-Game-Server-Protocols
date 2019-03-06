@@ -22,7 +22,7 @@ public class Server {
         InputStream fileInput = null;
         try {
 
-            fileInput = new FileInputStream("./src/main/resources/bootProperties.properties");
+            fileInput = new FileInputStream("   bootProperties.properties");
 
             // load a properties file
             prop.load(fileInput);

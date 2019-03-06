@@ -16,11 +16,13 @@ public class Client {
     String name;
     Map<String, ActionManager> actionManagerMap;
     ActionManager.ActionNames actionNames;
+    boolean isWon;
 
     Client() {
         isRegistered = false;
         actionManagerMap = new HashMap<>();
         actionNames = new ActionManager.ActionNames();
+        isWon = false;
 
         for (String name : actionNames.actionaNamesList) {
             ActionManager actionManager = new ActionManager(name);
@@ -148,41 +150,48 @@ public class Client {
     void move(String direction) {
 
         boolean printPos = true;
-        try {
-            actionManagerMap.get(actionNames.UPDATE_PLAYER_STATE).setStartTime();
-            int result = this.game.move(direction);
-            actionManagerMap.get(actionNames.UPDATE_PLAYER_STATE).setEndTIme();
+        if(!isWon) {
+            try {
+                actionManagerMap.get(actionNames.UPDATE_PLAYER_STATE).setStartTime();
+                int result = this.game.move(direction);
+                actionManagerMap.get(actionNames.UPDATE_PLAYER_STATE).setEndTIme();
 
-            switch (result) {
-                case 0:
-                    System.out.println("Move successfull. current position ");
-                    break;
-                case 1:
-                    System.out.println("Got a goal!!!");
-                    this.getStats();
-                    printPos = false;
-                    break;
-                case 2:
-                    System.out.println("We Won!!!");
-                    break;
-                case -1:
-                    System.out.println("Someone was already in the position");
-                    break;
-                case -2:
-                    System.out.println("We Lost... Someone else won");
-                    break;
-                case -3:
-                    System.out.println("Invalid move... That move will take us out of the board");
-                    break;
-                default:
-                    System.out.println("Unexpected error occured from the server");
+                switch (result) {
+                    case 0:
+                        System.out.println("Move successfull. current position ");
+                        break;
+                    case 1:
+                        System.out.println("Got a goal!!!");
+                        this.getStats();
+                        printPos = false;
+                        break;
+                    case 2:
+                        System.out.println("We Won!!!");
+                        break;
+                    case -1:
+                        System.out.println("Someone was already in the position");
+                        break;
+                    case -2:
+                        System.out.println("We Lost... Someone else won");
+                        break;
+                    case -3:
+                        System.out.println("Invalid move... That move will take us out of the board");
+                        break;
+                    default:
+                        System.out.println("Unexpected error occured from the server");
+                }
+                if (printPos) {
+                    this.getCurrentPosition();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (printPos) {
-                this.getCurrentPosition();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }else {
+            System.out.println("We already Won!!!");
+            this.getCurrentPosition();
         }
+
     }
 
     void getPlayerWon() {
