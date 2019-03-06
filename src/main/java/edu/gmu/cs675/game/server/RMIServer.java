@@ -116,7 +116,7 @@ public class RMIServer implements GameInterface {
         try {
             String hostname = RemoteServer.getClientHost();
             this.game.deRegisterPLayer(this.IPPlayerMap.get(hostname));
-            System.out.println("The player "+this.IPPlayerMap.get(hostName)+" from host "+hostname+" Dropped fom the game");
+            System.out.println("The player "+this.IPPlayerMap.get(hostname)+" from host "+hostname+" Dropped fom the game");
             IPPlayerMap.remove(hostname);
 
         } catch (ServerNotActiveException e) {
