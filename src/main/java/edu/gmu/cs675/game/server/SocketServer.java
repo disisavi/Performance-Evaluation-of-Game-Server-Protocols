@@ -46,6 +46,7 @@ public class SocketServer {
             System.out.println("ip -- " + this.inetAddress.getHostAddress());
             ExecutorService pool = Executors.newFixedThreadPool(20);
             this.game = new Game();
+            pool.execute(commandThread);
             while (true) {
                 pool.execute(new SocketListner(listener.accept()));
             }
@@ -55,6 +56,18 @@ public class SocketServer {
         }
 
     }
+
+    Runnable commandThread = () -> {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please Enter 'E' for exit");
+        while (true) {
+            if (scanner.nextLine().toUpperCase().charAt(0) == 'E') {
+                System.exit(1);
+            } else {
+                System.out.println("Please enter the right command.");
+            }
+        }
+    };
 
     private static class SocketListner implements Runnable, GameInterface {
         private Socket socket;
@@ -107,8 +120,8 @@ public class SocketServer {
                         returnMap = new AbstractMap.SimpleEntry<>(GameCodes.VOID, null);
                         break;
                     case GameCodes.DeRegister:
-                        returnObject = this.deRegisterPLayer();
-                        returnMap = new AbstractMap.SimpleEntry<>(GameCodes.NONVOID, returnObject);
+                        this.deRegisterPLayer();
+                        returnMap = new AbstractMap.SimpleEntry<>(GameCodes.VOID, null);
                         break;
                     case GameCodes.GetAll:
                         returnObject = this.getAllPlayerNames();
@@ -167,7 +180,7 @@ public class SocketServer {
         }
 
         @Override
-        public String getStats() throws RemoteException {
+        public String getStats() {
             return game.getStats(IPPlayerMap.get(this.invokerIP));
         }
 
@@ -177,12 +190,11 @@ public class SocketServer {
         }
 
         @Override
-        public Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException {
+        public void deRegisterPLayer() throws RemoteException {
             String playerName = IPPlayerMap.get(this.invokerIP);
             game.deRegisterPLayer(playerName);
             System.out.println("The player " + IPPlayerMap.get(this.invokerIP) + " from host " + this.invokerIP + " Dropped fom the game");
             IPPlayerMap.remove(this.invokerIP);
-            return new Boolean(true);
         }
     }
 }

@@ -20,5 +20,5 @@ public interface GameInterface extends Remote {
 
     String getAllPlayerNames() throws RemoteException;
 
-    Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException;
+    void deRegisterPLayer() throws RemoteException, ServerNotActiveException;
 }

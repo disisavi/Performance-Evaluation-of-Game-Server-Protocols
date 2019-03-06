@@ -22,7 +22,7 @@ public class Server {
         InputStream fileInput = null;
         try {
 
-            fileInput = new FileInputStream("   bootProperties.properties");
+            fileInput = new FileInputStream("./bootProperties.properties");
 
             // load a properties file
             prop.load(fileInput);
@@ -31,7 +31,7 @@ public class Server {
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error in getting boot properties...");
+            System.out.println("Error in getting boot properties..." + e.getCause());
             System.out.println("Default values being set");
             Game.maxHeight = 10;
             Game.maxWidth = 10;
@@ -46,13 +46,17 @@ public class Server {
             }
         }
 
-        if (input.toUpperCase().equals("R")) {
-            RMIServer rmiGameServer = new RMIServer();
-            rmiGameServer.startRMIServer();
-        }else if (input.toUpperCase().equals("S"))
-        {
-            SocketServer socketServer = new SocketServer();
-            socketServer.startSocketServer();
+        while (true) {
+            if (input.toUpperCase().equals("R")) {
+                RMIServer rmiGameServer = new RMIServer();
+                rmiGameServer.startRMIServer();
+            } else if (input.toUpperCase().equals("S")) {
+                SocketServer socketServer = new SocketServer();
+                socketServer.startSocketServer();
+            } else {
+                System.out.println("Please enter correct Command");
+                input = sc.nextLine();
+            }
         }
     }
 }

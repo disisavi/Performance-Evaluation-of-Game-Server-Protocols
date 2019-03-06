@@ -63,7 +63,7 @@ public class RMIClient implements ClientInterface {
     }
 
     @Override
-    public Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException {
-        return this.game.deRegisterPLayer();
+    public void deRegisterPLayer() throws RemoteException, ServerNotActiveException {
+        this.game.deRegisterPLayer();
     }
 }

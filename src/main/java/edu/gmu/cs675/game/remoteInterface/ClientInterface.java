@@ -18,7 +18,5 @@ public interface ClientInterface {
 
     String getAllPlayerNames() throws RemoteException;
 
-    Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException;
-
-
+    void deRegisterPLayer() throws RemoteException, ServerNotActiveException;
 }

@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.rmi.RemoteException;
-import java.rmi.server.ServerNotActiveException;
 import java.util.Scanner;
 
 public class SocketClient implements ClientInterface {
@@ -49,9 +47,13 @@ public class SocketClient implements ClientInterface {
         } catch (IOException e) {
             System.out.println("Reading failed due to " + e.getMessage() + " " + e.getCause());
             e.printStackTrace();
+            System.out.println("We will now exit the Client server");
+            System.exit(-1);
         } catch (ClassNotFoundException e) {
             System.out.println("Reading failed due to " + e.getMessage() + " " + e.getCause());
             e.printStackTrace();
+            System.out.println("We will now exit the Client server");
+            System.exit(-1);
         }
         return null;
     }
@@ -107,10 +109,9 @@ public class SocketClient implements ClientInterface {
     }
 
     @Override
-    public Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException {
+    public void deRegisterPLayer() {
         String[] strings = new String[1];
         strings[0] = GameCodes.DeRegister;
-        Object retrunObject = this.serverConnectionPoint(strings);
-        return (Boolean) retrunObject;
+        this.serverConnectionPoint(strings);
     }
 }

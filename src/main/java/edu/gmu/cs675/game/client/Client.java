@@ -17,6 +17,7 @@ public class Client {
     Map<String, ActionManager> actionManagerMap;
     ActionManager.ActionNames actionNames;
     boolean isWon;
+    String serverType;
 
     Client() {
         isRegistered = false;
@@ -43,20 +44,28 @@ public class Client {
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
 
-        actionManagerMap.get(actionNames.GET_CONNECTION).setStartTime();
-        try {
-            if (input.toUpperCase().equals("R")) {
+        while (true) {
+            try {
+                if (input.toUpperCase().equals("R")) {
+                    actionManagerMap.get(actionNames.GET_CONNECTION).setStartTime();
+                    this.game = new RMIClient();
+                    actionManagerMap.get(actionNames.GET_CONNECTION).setEndTIme();
+                    break;
+                } else if (input.toUpperCase().equals("S")) {
+                    actionManagerMap.get(actionNames.GET_CONNECTION).setEndTIme();
+                    this.game = new SocketClient();
+                    actionManagerMap.get(actionNames.GET_CONNECTION).setEndTIme();
+                    break;
+                } else {
+                    System.out.println("Kindly enter the correct command");
+                    input = sc.nextLine();
+                }
 
-                this.game = new RMIClient();
-            } else {
-                this.game = new SocketClient();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (NotBoundException e) {
+                e.printStackTrace();
             }
-
-            actionManagerMap.get(actionNames.GET_CONNECTION).setEndTIme();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (NotBoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -150,7 +159,7 @@ public class Client {
     void move(String direction) {
 
         boolean printPos = true;
-        if(!isWon) {
+        if (!isWon) {
             try {
                 actionManagerMap.get(actionNames.UPDATE_PLAYER_STATE).setStartTime();
                 int result = this.game.move(direction);
@@ -187,7 +196,7 @@ public class Client {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             System.out.println("We already Won!!!");
             this.getCurrentPosition();
         }
@@ -248,7 +257,7 @@ public class Client {
 
         actionManagerMap.get(actionNames.UPDATE_PLAYER_STATUS).setStartTime();
         try {
-         Boolean b=   this.game.registerPlayer(this.name);
+            Boolean b = this.game.registerPlayer(this.name);
             this.isRegistered = true;
         } catch (Exception e) {
             e.printStackTrace();

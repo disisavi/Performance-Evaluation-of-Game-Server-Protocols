@@ -15,8 +15,8 @@ public class Zone {
     public Set<Point> goalSet;
 
     public Zone() {
-        height = 5;
-        widht = 5;
+        height = maxHeight;
+        widht = maxWidth;
         basePoint = new Point(0, 0);
         goalSet = generategoalSet(numberPrize);
         playerMap = new HashMap<String, Player>();

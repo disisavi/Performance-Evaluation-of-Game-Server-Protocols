@@ -22,7 +22,7 @@ public class Game {
         this.zone.addPlayerToBoard(playerName);
     }
 
-    public String getPlayerWon(){
+    public String getPlayerWon() {
         StringBuilder returnString = new StringBuilder();
         if (!didSomeoneWin) {
             returnString.append("Error :- No One Won till now");
@@ -38,7 +38,7 @@ public class Game {
 
     public int move(String direction, String playerName) {
         if (this.didSomeoneWin) {
-            if(this.getPlayerWon().equals(playerName)){
+            if (this.getPlayerWon().equals(playerName)) {
                 return 2;
             }
             return -2;
@@ -59,11 +59,11 @@ public class Game {
                 break;
         }
 
-        if(value>=0
-        && this.zone.playerMap.get(playerName).numberofGoalsReached == Zone.numberPrize){
+        if (value >= 0
+                && this.zone.playerMap.get(playerName).numberofGoalsReached == Zone.numberPrize) {
             this.didSomeoneWin = true;
             this.zone.playerMap.get(playerName).isWon = true;
-            value  =  2;
+            value = 2;
         }
         return value;
     }
@@ -77,7 +77,7 @@ public class Game {
         int i = 0;
         for (String key : this.zone.playerMap.keySet()) {
             i++;
-            returnString.append(i+" " + key + "\n");
+            returnString.append(i + " " + key + "\n");
         }
         return returnString.toString();
     }
@@ -87,7 +87,7 @@ public class Game {
         return true;
     }
 
-    public String getStats (String playerName){
+    public String getStats(String playerName) {
         return this.zone.returnplayerStats(playerName);
     }
 }

@@ -112,7 +112,7 @@ public class RMIServer implements GameInterface {
         return this.game.getAllPlayerNames();
     }
 
-    public Boolean deRegisterPLayer() throws RemoteException, ServerNotActiveException {
+    public void deRegisterPLayer() throws RemoteException, ServerNotActiveException {
         try {
             String hostname = RemoteServer.getClientHost();
             this.game.deRegisterPLayer(this.IPPlayerMap.get(hostName));
@@ -123,7 +123,6 @@ public class RMIServer implements GameInterface {
             System.out.println(e.getCause());
             throw e;
         }
-        return true;
     }
 
 
