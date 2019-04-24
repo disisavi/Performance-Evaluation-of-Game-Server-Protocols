@@ -304,3 +304,9 @@ public class Client {
         System.out.println(". shut --> to shutdown the node");
     }
 }
+
+/*
+ * TODO 
+ * 	1. Report should be able to be printed on a file
+ * 	2. Make an automated randomised runner to make performamce evaluations automatically 
+ */
